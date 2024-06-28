@@ -2,6 +2,7 @@
 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{caption}
 \usepackage{fancyvrb}
 \usepackage{fancybox}
@@ -942,11 +943,56 @@ OSはユーザーやプログラム・アプリケーションがファイルを
 という感じで進めていきます．
 
 \section{LinuxOSとは?}
-本章では
+本章ではそもそもLinuxがどのようなOSなのか，その歴史と特徴を交えて解説します．
+正直なところ豆知識程度のことが多いので読み飛ばしてもらっても大丈夫です．
 
 \subsection{UNIX}
+Linuxの歴史を語る上では外せない「UNIX」について少し紹介します．
+Unixは1969年にAT\&Tベル研究所で開発されたOSで，当初は開発者達が私的な活動で1台しかない
+コンピュータを複数人で使用できるように開発された．その後改良が重ねられ，
+1973年にはもともとアセンブリ言語で実装されていたカーネルをC言語で書き直し，
+1975年にはベル研究所外の機関や学校に配布され，教育や研究に広く使われた．
+このときにはカーネル以外に，開発環境・ライブラリ群・文書・ソースコードなどが
+含まれた自己完結型のシステムとして成立していたため，重要な学習ツールとして幅広い
+影響を及ぼすようになっていた．また，これ以外にも当時はライセンスなしでの無料使用が可能であったことや
+安価なハードウェア上での動作や他マシンへの移植が可能という点が普及に大きく影響している．
+世界的な普及の結果，UNIXから派生したOSが数多く開発されており，macOSもこの一つである．
+
+UNIXはOS・ソフトウェア開発だけでなく，内部で使用されているC言語やTCP/IPプロトコルなどの
+概念の普及にも多大な影響をもたらしており，現在のソフトウェア開発やネットワークなどの文化
+の基礎の一部となっている．
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=150mm]{image/Unix_history-simple.svg.png}
+    \caption*{Unix・Linux系OSの派生}
+    \label{fig:Unix-history}
+\end{figure}
 
 \subsection{LinuxOS}
+LinuxはUNIX系のOSの1つと呼ばれるオペレーティングシステムである．
+1991年にフィンランドの大学生が，商用となり入手が難しくなってしまったUNIXとの互換の機能を持つ
+OSを動作させてみたいという動機により，独自のカーネルを実装してLinuxカーネルが開発されるに至った．
+そして，この基礎となるカーネルに加えてGNUというフリーソフトウェアのコンポーネントと組み合わさることで
+完全なフリーOSとして成長した．
+
+よくUNIX/Linux系というようにUNIXと並んで同種のものの様に扱われることが多いが，
+実際にはUNIXを改造したりしたものではなく完全に別のプログラムとして実装されたものであるので，
+正確には別系統のOSである(Unix-likeなOSと呼ばれる)．しかしながら，そのシステムや使用感は非常に似ているため，
+このことは一般的に話題に上がることはない．故にUNIX $\fallingdotseq$ Linuxという認識でもさして問題はない．
+
+システムがフリーであり，開発環境も整っているために工学部のコンピュータ・プログラミング関連の
+教材として利用されることが多々あり多少難しい印象を持たれがちである．
+しかし，実際のところUbuntuの様に非常に多くのソフトウェア機能・洗練されたデザインを持っている
+ため，簡単な作業であれば他の代表的なOSと遜色ない操作で行える．特にソフトウェアプログラム開発
+などでは，コマンド操作などによりOSそのもの知識も学びやすくなっており，学習材料として非常に優秀である．
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=70mm]{image/Tux.svg.png}
+    \caption*{Linuxのマスコットのペンギン「Tux」}
+    \label{fig:Tux}
+\end{figure}
 
 \subsection{Linuxディストリビューション}
 
@@ -1106,7 +1152,17 @@ Ubuntuではデフォルトの設定で，キーボードから
         \verb|ls| & ディレクトリ内の一覧を表示する \\
         \hline
         \verb|cd| & ディレクトリの移動 \\
-        \hline        
+        \hline
+        \verb|touch| & ファイルの作成 \\
+        \hline
+        \verb|cp| & ファイルのコピー \\
+        \hline
+        \verb|mv| & ファイル・ディレクトリの移動 \\
+        \hline
+        \verb|rm| & ファイルの削除 \\
+        \hline
+        \verb|mkdir| & ディレクトリの作成 \\
+        \hline
     \end{tabular}
 \end{table}
 
@@ -1148,7 +1204,7 @@ Ubuntuではデフォルトの設定で，キーボードから
 
 
 \subsubsection{\texttt{ls}コマンド}
-\verb|ls|コマンドは，引数で指定されたパスのディレクトリ内の一覧(ファイルとディレクトリ)
+\verb|ls|コマンド(list)は，引数で指定されたパスのディレクトリ内の一覧(ファイルとディレクトリ)
 を表示する．基本的な使い方は以下の様になる．
 
 \begin{figure}[H]
@@ -1194,8 +1250,116 @@ Ubuntuではデフォルトの設定で，キーボードから
 実際にLinux上で表示されるものを多少省いている．
 ここで，隠しファイルとして表示された「.」はカレントディレクトリを，「..」は一つ上のディレクトリを示すものである．
 
-\subsubsection{\texttt{cd}コマンド}
+\subsubsection{\textbf{\texttt{cd}コマンド}}
+\verb|cd|コマンド(change directory)はディレクトリの移動を行うコマンドで，引数に移動先のパスを指定することによりそのディレクトリに移動することができる．
+絶対パス・相対パスのどちらでも指定できる．
 
+\begin{figure}[H]
+    \begin{terminal}{\texttt{cd}コマンドの基本構文}
+        \termtext{\textasciitilde}{\cmd{cd} directory\_path}
+    \end{terminal}
+\end{figure}
+
+以下，図\ref{fig:file_dir_exam_tree}のディレクトリ構造を例に使用方法を示す．
+
+\begin{figure}[H]
+    \begin{terminal}{ホームディレクトリから\texttt{okarobo}ディレクトリへの移動}
+        \termtext{\textasciitilde}{\cmd{cd} okarobo} \\
+        \termtext{\textasciitilde/okarobo}{}
+    \end{terminal}
+\end{figure}
+
+この例では始め，ホームディレクトリをカレントディレクトリとして移動先の\verb|okarobo|ディレクトリへの相対パスを引数に指定した．
+同様にホームディレクトリから\verb|src|ディレクトリに移動するには以下の様に相対パスを指定する．
+
+
+\begin{figure}[H]
+    \begin{terminal}{ホームディレクトリから\texttt{src}ディレクトリへの移動}
+        \termtext{\textasciitilde}{\cmd{cd} test/src} \\
+        \termtext{\textasciitilde/test/src}{}
+    \end{terminal}
+\end{figure}
+
+一つ上のディレクトリに移動するには相対パスに「..」を指定する(前項参考)．
+
+\begin{figure}[H]
+    \begin{terminal}{1つ上のディレクトリへの移動}
+        \termtext{\textasciitilde/test}{\cmd{cd} ..} \\
+        \termtext{\textasciitilde}{}
+    \end{terminal}
+\end{figure}
+
+絶対パスを引数にする場合，移動先がホームディレクトリ以下であるならば一番上の階層をホームディレクトリとしたパスを指定する．
+ホームディレクトリより上の階層で，ルートディレクトリ以下の移動先なら，ルートディレクトリを一番上の階層としたパスにする．
+
+\subsubsection{\texttt{touch}コマンド}
+\verb|touch|コマンドは，引数で入力された名前のファイルを作成するコマンドである．
+単にファイル名だけであればカレントディレクトリ直下に作成されるが，パスを指定すればその場所に作成することができる．
+
+\begin{figure}[H]
+    \begin{terminal}{\texttt{touch}コマンドの基本構文}
+        \termtext{\textasciitilde/test}{\cmd{touch} filename(+ path)}
+    \end{terminal}
+\end{figure}
+
+カレントディレクトリ直下に関しては基本的にパスを指定する必要が無いため，何も入力しないことが暗黙的にカレントディレクトリを指定していると考えれば，
+引数は「ファイル名」というより「ファイルのパス」と言える．
+
+\begin{figure}[H]
+    \begin{terminal}{カレントディレクトリ直下へのファイルの作成(ファイル名のみ)}
+        \termtext{\textasciitilde/okarobo}{\cmd{touch} func.c} \\
+        \termtext{\textasciitilde/okarobo}{ls} \\
+        \texttt{\textcolor{dircolor}{ros2\_ws} memo.txt func.c}
+    \end{terminal}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{terminal}{ファイルのパスを指定して作成}
+        \termtext{\textasciitilde}{\cmd{touch} test/include/mylib.h} \\
+        \termtext{\textasciitilde}{ls test/include} \\
+        \texttt{mylib.h}
+    \end{terminal}
+\end{figure}
+
+\subsubsection{\texttt{cp}コマンド}
+\verb|cp|コマンド(copy)は，第1引数で指定されたファイルの内容をコピーし，第2引数で指定されたファイル(パス)に新たに保存する．
+前項の\verb|touch|コマンドと同様に引数にはパスが使用できるため，ファイル名をパス付きで指定することで異なるディレクトリにコピーを作成することができる．
+第1・第2引数共にファイル名のみの場合，カレントディレクトリ内にあるファイルの内容が第2引数の名前で新たにカレントディレクトリ内に作成される．
+
+\begin{figure}[H]
+    \begin{terminal}{\texttt{cp}コマンドの基本書式}
+        \termtext{\textasciitilde/okarobo}{\cmd{cp} filename new\_filename} 
+    \end{terminal}
+\end{figure}
+
+コピー元がカレントディレクトリ以外であったり，コピー先を別のディレクトリにしたい場合は\verb|filename|や\verb|new_filename|を「\verb|test/filename|」の様にパスを記述すればOK．
+
+\begin{figure}[H]
+    \begin{terminal}{\texttt{okarobo}ディレクトリでのファイルのコピー}
+        \termtext{\textasciitilde/okarobo}{\cmd{cp} memo.txt new\_memo.txt} \\
+        \termtext{\textasciitilde/okarobo}{ls} \\
+        \texttt{\textcolor{dircolor}{ros2\_ws} memo.txt new\_memo.txt}
+    \end{terminal}
+\end{figure}
+
+上の例では，\verb|okarobo|ディレクトリ直下にある\verb|memo.txt|というファイルを\verb|new_memo.txt|という名前の新しいファイルとしてコピーしている．
+第2引数も特にパスを指定していないため，コピーした新しいファイルはカレントディレクトリに作成される．
+
+\subsubsection{\texttt{mv}コマンド}
+\verb|mv|コマンドは，第1引数で指定されたファイルを第2引数で指定されたパスの場所に移動させる，または名前の変更ができる．
+第2引数に関して，移動させる場合はパスを，名前を変更する場合は変更後のファイル名を指定する．
+
+基本的な書式は前述の\verb|cp|コマンドとほとんど同じなので省略する．ただし，変更前のファイル(名)は残らないので注意が必要である．
+
+\subsubsection{\texttt{rm}コマンド}
+\verb|rm|コマンドは引数で指定された名前(またはパス)のファイルを削除する．第1引数以降にも追加でファイル名を追加することで複数のファイルの削除も可能である．
+ただし，コマンド一つで完全に削除できるため，実行の際には\verb|-i|オプションを付けて削除確認を行うなどの注意が必要である．また，\verb|-r|コマンドを付ける
+ことによりディレクトリの削除も可能である．
+
+コマンドの性質上，確認なしでディレクトリごと削除できるために，Linuxのすべてのディレクトリを破壊することもできるので使用には本当に注意！！気になる人はブラウザで
+「Linux バルス」や「rm -rf /*」などと調べてみよう．
+
+\subsection{その他のコマンド}
 
 \subsubsection{\texttt{man}コマンド} \label{sec:cmd_man}
 
